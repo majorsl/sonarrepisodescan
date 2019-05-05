@@ -1,5 +1,5 @@
 #!/bin/bash
-# version 1.0 *See README.md for requirements and help*
+# version 1.0.1 *See README.md for requirements and help*
 
 # base URL for your Sonarr's api.
 BASEURL="https://synology.themajorshome.com:6003/api/command"
@@ -7,7 +7,7 @@ BASEURL="https://synology.themajorshome.com:6003/api/command"
 SONARRAPI="/Users/majorsl/Scripts/sonarrapi.txt"
 # path relative to this script of new files to process.
 INBOX="/Users/majorsl/Library/Containers/nz.co.pixeleyes.AutoMounter/Data/Mounts/synology/SMB/Media Center/Unsorted-TV Shows/"
-# path relative to your Sonarr install where to find the files.
+# path relative to your Sonarr install where it will find the files.
 SONARRBOX="/volume1/Media Center/Unsorted-TV Shows/"
 # pre-script path. Execute a script before sonarrepisodescan. Leave as "" if none.
 PRESCRIPT="/Users/majorsl/Scripts/GitHub/convertac3/convertac3.sh"
@@ -16,7 +16,7 @@ POSTSCRIPT=""
 
 IFS=$'\n'
 
-# verify paths exist, exit if not.
+# verify path exist, exit if not.
 if [ ! -d "$INBOX" ]; then
 	echo "$INBOX Not Found!"
 	exit 1
@@ -60,6 +60,7 @@ done
 
 # tell Sonarr to scan for episodes.
 cd "$INBOX" || exit
+
 #Set condition so first directory is skipped since it is "."
 I="1"
 for EPISODE in $(find . -type d); do
@@ -71,10 +72,9 @@ for EPISODE in $(find . -type d); do
         --data "{\"name\": \"DownloadedEpisodesScan\", \"path\": \"$SONARRBOX$EPISODE\"}";
     fi
     I="2"
-
+done
 # Execute post-script.
 if [ "$POSTSCRIPT" != "" ]; then
 	/bin/bash "$POSTSCRIPT"
 	wait
 fi
-done
