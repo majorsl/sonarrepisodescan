@@ -1,5 +1,5 @@
 #!/bin/bash
-# version 1.0.1 *See README.md for requirements and help*
+# version 1.0.2 *See README.md for requirements and help*
 
 # base URL for your Sonarr's api.
 BASEURL="https://synology.themajorshome.com:6003/api/command"
@@ -73,6 +73,11 @@ for EPISODE in $(find . -type d); do
     fi
     I="2"
 done
+
+# Remove empty directories.
+cd "$INBOX" || exit
+find . -empty -type d -delete
+
 # Execute post-script.
 if [ "$POSTSCRIPT" != "" ]; then
 	/bin/bash "$POSTSCRIPT"
