@@ -1,14 +1,16 @@
 #!/bin/bash
-# version 1.0.2 *See README.md for requirements and help*
+# version 1.0.3 *See README.md for requirements and help*
 
 # base URL for your Sonarr's api.
-BASEURL="https://synology.themajorshome.com:6003/api/command"
+BASEURL="http://10.0.1.201:61000/api/command"
 # your API key, single line in a txt file.
 SONARRAPI="/Users/majorsl/Scripts/sonarrapi.txt"
 # path relative to this script of new files to process.
-INBOX="/Users/majorsl/Library/Containers/nz.co.pixeleyes.AutoMounter/Data/Mounts/synology/SMB/Media Center/Unsorted-TV Shows/"
+INBOX="/Volumes/EG6/Downloads/Sonarr/"
+# path relative to this script where processed files are moved for Sonarr processing.
+OUTBOX="/Users/majorsl/Library/Containers/nz.co.pixeleyes.AutoMounter/Data/Mounts/synology/SMB/Media Center/Unsorted-TV Shows/"
 # path relative to your Sonarr install where it will find the files.
-SONARRBOX="/volume1/Media Center/Unsorted-TV Shows/"
+SONARRBOX="/tv/Unsorted-TV Shows/"
 # pre-script path. Execute a script before sonarrepisodescan. Leave as "" if none.
 PRESCRIPT="/Users/majorsl/Scripts/GitHub/convertac3/convertac3.sh"
 # post-script path. Execute a script after sonarrepisodescan. Leave as "" if none.
@@ -58,8 +60,11 @@ for FILE in "$INBOX"/*; do
     fi
 done
 
+# Move files.
+mv $INBOX* $OUTBOX
+
 # tell Sonarr to scan for episodes.
-cd "$INBOX" || exit
+cd "$OUTBOX" || exit
 
 #Set condition so first directory is skipped since it is "."
 I="1"
@@ -75,7 +80,7 @@ for EPISODE in $(find . -type d); do
 done
 
 # Remove empty directories.
-cd "$INBOX" || exit
+cd "$OUTBOX" || exit
 find . -empty -type d -delete
 
 # Execute post-script.
