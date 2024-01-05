@@ -71,10 +71,7 @@ I="1"
 for EPISODE in $(find . -type d); do
 	if [[ "$I" -ne "1" ]]; then
 		echo "$EPISODE"
-        /usr/bin/curl $BASEURL -X POST \
-        --header "Content-Type: Application/JSON" \
-        --header "X-Api-Key: $APIKEY" \
-        --data "{\"name\": \"DownloadedEpisodesScan\", \"path\": \"$SONARRBOX$EPISODE\"}";
+        /usr/bin/curl $BASEURL -X POST --header "X-Api-Key:$APIKEY" -d '{"name":"DownloadedEpisodesScan","path":"$SONARRBOX$EPISODE","importMode":"Move"}' --header "Content-Type: application/json; charset=utf-8"
     fi
     I="2"
 done
