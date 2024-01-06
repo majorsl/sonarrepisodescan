@@ -1,5 +1,5 @@
 #!/bin/bash
-# version 1.0.3 *See README.md for requirements and help*
+# version 1.4.1 *See README.md for requirements and help*
 
 # base URL for your Sonarr's api.
 BASEURL="http://10.0.1.201:61000/api/v3/command"
@@ -71,7 +71,7 @@ I="1"
 for EPISODE in $(find . -type d); do
 	if [[ "$I" -ne "1" ]]; then
 		echo "$EPISODE"
-        /usr/bin/curl $BASEURL -X POST --header "X-Api-Key:$APIKEY" -d '{"name":"DownloadedEpisodesScan","path":"$SONARRBOX$EPISODE","importMode":"Move"}' --header "Content-Type: application/json; charset=utf-8"
+        /usr/bin/curl $BASEURL -X POST --header "X-Api-Key:$APIKEY" -d "{\"name\":\"DownloadedEpisodesScan\",\"path\":\"$SONARRBOX$EPISODE\",\"importMode\":\"Move\"}" --header "Content-Type: application/json; charset=utf-8"
     fi
     I="2"
 done
