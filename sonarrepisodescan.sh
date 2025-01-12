@@ -1,5 +1,5 @@
 #!/bin/bash
-# version 1.5 *See README.md for requirements and help*
+# version 1.6 *See README.md for requirements and help*
 # SET YOUR OPTIONS HERE -------------------------------------------------------------------------
 # base URL for your Sonarr's api.
 BASEURL="http://10.0.1.201:61000/api/v3/command"
@@ -11,11 +11,6 @@ INBOX="/media/majorsl/e9ef2c72-9134-4418-86dc-10742b12d0ed/Downloads/Sonarr/"
 OUTBOX="/synology/mediacenter/Unsorted-TV Shows/"
 # path relative to your Sonarr install where it will find the files.
 SONARRBOX="/tv/Unsorted-TV Shows/"
-# pre-script path. Execute a script before sonarrepisodescan. Leave as "" if none.
-PRESCRIPT1="/home/majorsl/Scripts/GitHub/convertsub/convertsub.sh"
-PRESCRIPT2="/home/majorsl/Scripts/GitHub/convertac3/convertac3.sh"
-# post-script path. Execute a script after sonarrepisodescan. Leave as "" if none.
-POSTSCRIPT=""
 # number of days to clean up stale items in the OUTBOX.
 CLEAN="30"
 # -----------------------------------------------------------------------------------------------
@@ -25,17 +20,6 @@ IFS=$'\n'
 if [ ! -d "$INBOX" ]; then
 	echo "$INBOX Not Found!"
 	exit 1
-fi
-
-# Execute pre-script 1.
-if [ "$PRESCRIPT1" != "" ]; then
-	/bin/bash "$PRESCRIPT1"
-    wait
-fi
-# Execute pre-script 2.
-if [ "$PRESCRIPT2" != "" ]; then
-	/bin/bash "$PRESCRIPT2"
-    wait
 fi
 
 # read api key.
@@ -95,9 +79,3 @@ cd "$OUTBOX" || exit
 find . -empty -type d -delete
 cd "$INBOX" || exit
 find . -empty -type d -delete
-
-# Execute post-script.
-if [ "$POSTSCRIPT" != "" ]; then
-	/bin/bash "$POSTSCRIPT"
-	wait
-fi
