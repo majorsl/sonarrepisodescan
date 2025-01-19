@@ -2,7 +2,7 @@
 # version 1.6 *See README.md for requirements and help*
 # SET YOUR OPTIONS HERE -------------------------------------------------------------------------
 # base URL for your Sonarr's api.
-BASEURL="http://10.0.1.201:61000/api/v3/command"
+BASEURL="http://10.0.1.205:61000/api/v3/command"
 # your API key, single line in a txt file.
 SONARRAPI="/home/majorsl/Scripts/sonarrapi.txt"
 # path relative to this script of new files to process.
