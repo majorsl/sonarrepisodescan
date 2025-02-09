@@ -1,5 +1,5 @@
 #!/bin/bash
-# version 1.6 *See README.md for requirements and help*
+# version 1.6.1 *See README.md for requirements and help*
 # SET YOUR OPTIONS HERE -------------------------------------------------------------------------
 # base URL for your Sonarr's api.
 BASEURL="http://10.0.1.205:61000/api/v3/command"
@@ -36,7 +36,7 @@ done
 filearray3=( '*.mp4' '*.mkv' '*.avi' )
 for delfile in "${filearray3[@]}"
 do
-	find "$INBOX" -type f -maxdepth 4 -size -15M -iname "$delfile" -delete
+	find "$INBOX" -maxdepth 4 -type f -size -15M -iname "$delfile" -delete
 done
 
 # move single files into folders which Sonarr requires.
@@ -63,7 +63,7 @@ I="1"
 for EPISODE in $(find . -type d); do
 	if [[ "$I" -ne "1" ]]; then
 		echo "$EPISODE"
-        /usr/bin/curl $BASEURL -X POST --header "X-Api-Key:$APIKEY" -d "{\"name\":\"DownloadedEpisodesScan\",\"path\":\"$SONARRBOX$EPISODE\",\"importMode\":\"Move\"}" --header "Content-Type: application/json; charset=utf-8"
+        /usr/bin/curl --max-time 240 $BASEURL -X POST --header "X-Api-Key:$APIKEY" -d "{\"name\":\"DownloadedEpisodesScan\",\"path\":\"$SONARRBOX$EPISODE\",\"importMode\":\"Move\"}" --header "Content-Type: application/json; charset=utf-8"
     fi
     I="2"
 done
