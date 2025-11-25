@@ -1,18 +1,18 @@
 #!/bin/bash
-# version 1.6.1 *See README.md for requirements and help*
+# version 1.7.0 *See README.md for requirements and help*
 # SET YOUR OPTIONS HERE -------------------------------------------------------------------------
-# base URL for your Sonarr's api.
-BASEURL="http://10.0.1.205:61000/api/v3/command"
 # your API key, single line in a txt file.
 SONARRAPI="/home/majorsl/Scripts/sonarrapi.txt"
+# your Sonarr's IP/hostname address, single line in a txt file eg 10.0.1.2 or example.com
+SONARRIP="/home/majorsl/Scripts/sonarrip.txt"
 # path relative to this script of new files to process.
-INBOX="/media/majorsl/e9ef2c72-9134-4418-86dc-10742b12d0ed/Downloads/Sonarr/"
+INBOX="/storagedrive/Downloads/Sonarr/"
 # path relative to this script where processed files are moved for Sonarr processing.
 OUTBOX="/synology/mediacenter/Unsorted-TV Shows/"
 # path relative to your Sonarr install where it will find the files.
 SONARRBOX="/tv/Unsorted-TV Shows/"
 # number of days to clean up stale items in the OUTBOX.
-CLEAN="30"
+CLEAN="10"
 # -----------------------------------------------------------------------------------------------
 IFS=$'\n'
 
@@ -22,10 +22,14 @@ if [ ! -d "$INBOX" ]; then
 	exit 1
 fi
 
-# read api key.
+# read api key & host.
 APIKEY=$(cat "$SONARRAPI")
+IP=$(cat "$SONARRIP")
 
-# clean up these files so they don't get moved to the show directories.
+# base URL for your Sonarr's api.
+BASEURL="http://$IP:8989/api/v3/command"
+
+# clean up these files so they don't confuse Sonarr.
 filearray=( '*.exe' '*.nfo' '.DS_Store' '*.srt' '*.sfv' '*.jpg' '*.idx' '*.md5' '*.url' '*.mta' '*.txt' '*.png' '*.ico' '*.xml' '*.htm' '.html' '*.web' '*.lnk' '*.website' '*.torrent' '*.sql' '*.sql-lite' '*.sqlite' 'Thumbs.db' '*.json' )
 for delfile in "${filearray[@]}"
 do
